@@ -7,7 +7,7 @@ import {IonicModule} from "@ionic/angular";
   styleUrl: "./auth.component.scss",
   standalone: true,
   imports: [
-    IonicModule
+    IonicModule,
   ]
 })
 export class AuthComponent {

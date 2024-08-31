@@ -1,5 +1,5 @@
 {
-  "name": "k-space",
+  "name": "k-space-client",
   "integrations": {
     "capacitor": {}
   },
