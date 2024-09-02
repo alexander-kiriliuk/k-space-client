@@ -2,6 +2,10 @@ import {Component, inject} from "@angular/core";
 import {
   AlertController,
   IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
   IonCol,
   IonContent,
   IonGrid,
@@ -31,6 +35,10 @@ import {AuthService} from "./auth.service";
     IonGrid,
     ReactiveFormsModule,
     IonButton,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
   ]
 })
 export class AuthComponent {

@@ -1,27 +1,31 @@
-<ion-content class="ion-padding">
-  <h3 class="ion-text-center">Authorize</h3>
-  <ion-grid [formGroup]="form">
-    <ion-row>
-      <ion-col class="ion-padding-vertical">
-        <ion-input
-          fill="outline"
-          formControlName="login"
-          labelPlacement="floating"
-          label="Login"/>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-padding-vertical">
-        <ion-input
-          formControlName="password"
-          type="password"
-          fill="outline"
-          labelPlacement="floating"
-          label="Password"/>
-      </ion-col>
-    </ion-row>
-    <ion-row class="ion-padding-vertical ion-justify-content-center">
-      <ion-button [disabled]="form.invalid" (click)="doLogin()">Login</ion-button>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+<ion-grid>
+  <ion-row class="ion-align-items-center ion-justify-content-center">
+    <ion-col>
+      <h3 class="ion-text-center">Authorize</h3>
+      <ion-grid [formGroup]="form">
+        <ion-row>
+          <ion-col class="ion-padding-vertical">
+            <ion-input
+              fill="outline"
+              formControlName="login"
+              labelPlacement="floating"
+              label="Login"/>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-padding-vertical">
+            <ion-input
+              formControlName="password"
+              type="password"
+              fill="outline"
+              labelPlacement="floating"
+              label="Password"/>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-vertical ion-justify-content-center">
+          <ion-button [disabled]="form.invalid" (click)="doLogin()">Login</ion-button>
+        </ion-row>
+      </ion-grid>
+    </ion-col>
+  </ion-row>
+</ion-grid>

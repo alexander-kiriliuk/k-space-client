@@ -1,0 +1,10 @@
+:host {
+  & > ion-grid {
+    display: flex;
+    min-width: 360px;
+
+    & > ion-row {
+      width: 100%;
+    }
+  }
+}
