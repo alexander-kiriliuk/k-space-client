@@ -3,10 +3,10 @@ import {Routes} from "@angular/router";
 export const routes: Routes = [
   {
     path: "auth",
-    loadComponent: () => import("./auth/auth.component").then(m => m.AuthComponent),
+    loadComponent: () => import("./pages/auth/auth.component").then(m => m.AuthComponent),
   },
   {
     path: "setup",
-    loadComponent: () => import("./setup/setup.component").then(m => m.SetupComponent),
+    loadComponent: () => import("./pages/setup/setup.component").then(m => m.SetupComponent),
   },
 ];
