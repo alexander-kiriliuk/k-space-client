@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {CapacitorHttp} from "@capacitor/core";
-import {API_PREFIX} from "../../global/constants";
+import {API_PREFIX} from "../../modules/http/http.constants";
 
 @Injectable()
 export class SetupService {

@@ -1,22 +1,14 @@
-import {Injectable} from "@angular/core";
-import {LoginPayload} from "./auth.types";
-import {CapacitorHttp} from "@capacitor/core";
-import {API_PREFIX} from "../../global/constants";
-import {GetResult, Preferences} from "@capacitor/preferences";
+import {inject, Injectable} from "@angular/core";
+import {JwtDto, LoginPayload} from "./auth.types";
+import {HttpService} from "../../modules/http/http.service";
 
 @Injectable()
 export class AuthService {
 
-  async auth(payload: LoginPayload) {
-    const host: GetResult = await Preferences.get({key: "apiHost"});
-    return CapacitorHttp.post({
-      url: `${host.value}${API_PREFIX}/auth/login`,
-      data: payload,
-      headers: {
-        "content-type":"application/json"
-      },
-      responseType: "json"
-    });
+  private readonly http = inject(HttpService);
+
+  auth(payload: LoginPayload) {
+    return this.http.post<JwtDto>("/auth/login", payload);
   }
 
 }

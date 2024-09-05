@@ -4,6 +4,7 @@ import {SplashScreen} from "@capacitor/splash-screen";
 import {Preferences} from "@capacitor/preferences";
 import {Router} from "@angular/router";
 import {App} from "@capacitor/app";
+import {API_HOST_TOKEN} from "./modules/http/http.constants";
 
 @Component({
   selector: "app-root",
@@ -32,7 +33,7 @@ export class AppComponent {
   }
 
   private checkApi() {
-    Preferences.get({key: "apiHost"}).then(res => {
+    Preferences.get({key: API_HOST_TOKEN}).then(res => {
       if (!res.value) {
         this.router.navigateByUrl("/setup");
       } else {

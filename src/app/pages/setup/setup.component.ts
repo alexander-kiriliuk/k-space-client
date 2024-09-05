@@ -13,6 +13,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {Preferences} from "@capacitor/preferences";
 import {Router} from "@angular/router";
 import {SetupService} from "./setup.service";
+import {API_HOST_TOKEN} from "../../modules/http/http.constants";
 
 @Component({
   selector: "setup",
@@ -38,7 +39,7 @@ export class SetupComponent implements OnInit {
   private readonly router = inject(Router);
 
   ngOnInit() {
-    Preferences.get({key: "apiHost"}).then(res => {
+    Preferences.get({key: API_HOST_TOKEN}).then(res => {
       if (res.value) {
         this.form.patchValue({apiHost: res.value});
       }
@@ -55,7 +56,7 @@ export class SetupComponent implements OnInit {
       });
       await alert.present();
       alert.onDidDismiss().then(() => {
-        Preferences.set({key: "apiHost", value: host}).then(() => {
+        Preferences.set({key: API_HOST_TOKEN, value: host}).then(() => {
           this.router.navigateByUrl("/auth");
         });
       });
