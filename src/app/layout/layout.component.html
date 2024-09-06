@@ -1,4 +1,21 @@
-<p>
-  layout works!
-</p>
-<router-outlet />
+<ion-content class="ion-padding">
+  <router-outlet/>
+</ion-content>
+<ion-tab-bar slot="bottom">
+  <ion-tab-button>
+    <ion-icon name="home-outline"/>
+    <span>Home</span>
+  </ion-tab-button>
+  <ion-tab-button>
+    <ion-icon name="bookmarks-outline"/>
+    <span>Favorites</span>
+  </ion-tab-button>
+  <ion-tab-button>
+    <ion-icon name="images-outline"/>
+    <span>Albums</span>
+  </ion-tab-button>
+  <ion-tab-button>
+    <ion-icon name="folder-outline"/>
+    <span>Files</span>
+  </ion-tab-button>
+</ion-tab-bar>
