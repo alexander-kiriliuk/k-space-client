@@ -5,6 +5,8 @@ import {Preferences} from "@capacitor/preferences";
 import {Router} from "@angular/router";
 import {App} from "@capacitor/app";
 import {API_HOST_TOKEN} from "./modules/http/http.constants";
+import {AppService} from "./global/app.service";
+import {catchError, finalize} from "rxjs";
 
 @Component({
   selector: "app-root",
@@ -20,6 +22,7 @@ export class AppComponent {
   private readonly platform = inject(Platform);
   private readonly router = inject(Router);
   private readonly routerOutlet = inject(IonRouterOutlet, {optional: true});
+  private readonly appService = inject(AppService);
 
   constructor() {
     this.platform.ready().then(() => {
@@ -36,11 +39,24 @@ export class AppComponent {
     Preferences.get({key: API_HOST_TOKEN}).then(res => {
       if (!res.value) {
         this.router.navigateByUrl("/setup");
+        SplashScreen.hide();
       } else {
-        this.router.navigateByUrl("/auth");
-        // todo check authorize
+        this.testConnection();
       }
-      SplashScreen.hide();
+    });
+  }
+
+  private async testConnection() {
+    this.appService.getOptions().pipe(
+      catchError(async error => {
+        this.router.navigateByUrl("/auth");
+        throw new Error(error);
+      }),
+      finalize(() => {
+        SplashScreen.hide();
+      })
+    ).subscribe(async result => {
+      this.router.navigateByUrl("/home");
     });
   }
 

@@ -1,12 +1,17 @@
 import {Routes} from "@angular/router";
 
-export const routes: Routes = [
+export const rootRoutes: Routes = [
   {
     path: "auth",
-    loadComponent: () => import("./pages/auth/auth.component").then(m => m.AuthComponent),
+    loadComponent: () => import("./pages/auth/auth-page.component").then(m => m.AuthPageComponent),
   },
   {
     path: "setup",
-    loadComponent: () => import("./pages/setup/setup.component").then(m => m.SetupComponent),
+    loadComponent: () => import("./pages/setup/setup-page.component").then(m => m.SetupPageComponent),
   },
+  {
+    path: "",
+    loadChildren: () => import("./layout/layout.routes")
+      .then(m => m.layoutRoutes)
+  }
 ];

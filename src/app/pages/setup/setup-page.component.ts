@@ -16,9 +16,9 @@ import {SetupService} from "./setup.service";
 import {API_HOST_TOKEN} from "../../modules/http/http.constants";
 
 @Component({
-  selector: "setup",
-  templateUrl: "./setup.component.html",
-  styleUrls: ["./setup.component.scss"],
+  selector: "setup-page",
+  templateUrl: "./setup-page.component.html",
+  styleUrls: ["./setup-page.component.scss"],
   standalone: true,
   providers: [SetupService],
   imports: [
@@ -31,7 +31,7 @@ import {API_HOST_TOKEN} from "../../modules/http/http.constants";
     ReactiveFormsModule,
   ]
 })
-export class SetupComponent implements OnInit {
+export class SetupPageComponent implements OnInit {
 
   readonly form = createSetupForm();
   private readonly alertController = inject(AlertController);

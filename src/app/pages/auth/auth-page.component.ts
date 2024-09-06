@@ -20,16 +20,14 @@ import {createLoginForm} from "./auth.constants";
 import {AuthService} from "./auth.service";
 import {catchError, finalize} from "rxjs";
 import {setAuthTokens} from "../../modules/http/http.constants";
-import {AppService} from "../../global/app.service";
 
 @Component({
-  selector: "auth",
-  templateUrl: "./auth.component.html",
-  styleUrl: "./auth.component.scss",
+  selector: "auth-page",
+  templateUrl: "./auth-page.component.html",
+  styleUrl: "./auth-page.component.scss",
   standalone: true,
   providers: [
     AuthService,
-    AppService
   ],
   imports: [
     IonInput,
@@ -47,13 +45,12 @@ import {AppService} from "../../global/app.service";
     IonCardContent,
   ]
 })
-export class AuthComponent {
+export class AuthPageComponent {
 
   readonly form = createLoginForm();
   private readonly loadingCtrl = inject(LoadingController);
   private readonly alertController = inject(AlertController);
   private readonly authService = inject(AuthService);
-  private readonly appService = inject(AppService);
 
   async doLogin() {
     const loading = await this.loadingCtrl.create({
@@ -84,32 +81,5 @@ export class AuthComponent {
     });
   }
 
-  async test() {
-    const loading = await this.loadingCtrl.create({
-      message: "Test...",
-    });
-    await loading.present();
-    this.appService.getOptions().pipe(
-      catchError(async error => {
-        const alert = await this.alertController.create({
-          header: "Error",
-          subHeader: error.message,
-          buttons: ["OK"],
-        });
-        await alert.present();
-        throw new Error(error);
-      }),
-      finalize(() => {
-        loading.dismiss();
-      })
-    ).subscribe(async result => {
-      const alert = await this.alertController.create({
-        header: "Successful resp",
-        message: JSON.stringify(result),
-        buttons: ["OK"],
-      });
-      await alert.present();
-    });
-  }
 
 }

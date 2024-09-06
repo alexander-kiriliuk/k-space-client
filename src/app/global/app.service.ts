@@ -1,7 +1,7 @@
 import {inject, Injectable} from "@angular/core";
 import {HttpService} from "../modules/http/http.service";
 
-@Injectable()
+@Injectable({providedIn: "root"})
 export class AppService {
 
   private readonly http = inject(HttpService);
