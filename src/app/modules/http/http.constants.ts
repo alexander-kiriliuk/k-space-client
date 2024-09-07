@@ -22,3 +22,7 @@ export function setAuthTokens(data: JwtDto) {
 export function getAuthTokens() {
   return Preferences.get({key: AUTH_TOKEN_PAIR_TOKEN});
 }
+
+export function clearAuthTokens(){
+  return Preferences.remove({key: AUTH_TOKEN_PAIR_TOKEN});
+}

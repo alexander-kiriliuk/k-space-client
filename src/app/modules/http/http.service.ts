@@ -3,12 +3,14 @@ import {HttpReqOptions, ReqMethod} from "./http.types";
 import {CapacitorHttp, HttpOptions, HttpResponse} from "@capacitor/core";
 import {
   API_PREFIX,
+  clearAuthTokens,
   DEFAULT_HEADERS,
   DEFAULT_RESPONSE_TYPE,
   getAuthTokens,
-  getHost
+  getHost,
+  setAuthTokens
 } from "./http.constants";
-import {first, from, map, mergeMap, Observable} from "rxjs";
+import {catchError, first, from, mergeMap, Observable, of, switchMap} from "rxjs";
 import {JwtDto} from "../../pages/auth/auth.types";
 
 @Injectable({providedIn: "root"})
@@ -51,31 +53,21 @@ export class HttpService {
               }
             }
             Object.assign(options, opt);
-            let obs: Observable<HttpResponse>;
-            switch (method) {
-            case "POST":
-              options.data = data;
-              obs = from(CapacitorHttp.post(options));
-              break;
-            case "PUT":
-              options.data = data;
-              obs = from(CapacitorHttp.put(options));
-              break;
-            case "PATCH":
-              options.data = data;
-              obs = from(CapacitorHttp.patch(options));
-              break;
-            case "DELETE":
-              obs = from(CapacitorHttp.delete(options));
-              break;
-            default:
-              obs = from(CapacitorHttp.get(options));
-              break;
-            }
+            const obs = this.getObservableByMethod(options, method, data);
             return obs.pipe(
-              map((response: HttpResponse) => {
+              switchMap((response: HttpResponse) => {
                 if (response.status >= 200 && response.status < 300) {
-                  return response.data;
+                  return of(response.data);
+                } else if (response.status === 403 && response.data.message === "ERR_TOKEN_A") {
+                  return this.exchangeToken().pipe(
+                    switchMap(newTokenPairRes => {
+                      return from(setAuthTokens(newTokenPairRes)).pipe(
+                        mergeMap(() => {
+                          return this.request(method, url, data, opt);
+                        })
+                      );
+                    })
+                  );
                 } else {
                   throw new Error(`HTTP Error: ${response.status}`);
                 }
@@ -87,5 +79,39 @@ export class HttpService {
       first()
     ) as Observable<T>;
   }
-}
 
+  private exchangeToken(): Observable<JwtDto> {
+    return from(getAuthTokens()).pipe(
+      mergeMap(tokenRes => {
+        const tokenPair = JSON.parse(tokenRes.value) as JwtDto;
+        if (!tokenPair?.refreshToken) {
+          throw new Error("No one token found");
+        }
+        clearAuthTokens();
+        return this.post<JwtDto>("/auth/exchange-token", {token: tokenPair.refreshToken}).pipe(
+          catchError(() => {
+            throw new Error("Token exchange failed");
+          })
+        );
+      })
+    );
+  }
+
+  private getObservableByMethod(options: HttpOptions, method: ReqMethod, data: unknown) {
+    switch (method) {
+    case "POST":
+      options.data = data;
+      return from(CapacitorHttp.post(options));
+    case "PUT":
+      options.data = data;
+      return from(CapacitorHttp.put(options));
+    case "PATCH":
+      options.data = data;
+      return from(CapacitorHttp.patch(options));
+    case "DELETE":
+      return from(CapacitorHttp.delete(options));
+    }
+    return from(CapacitorHttp.get(options));
+  }
+
+}

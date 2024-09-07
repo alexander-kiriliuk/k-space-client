@@ -1,3 +1,27 @@
-span {
-  padding-top: 5px;
+.menu-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  ion-title {
+    margin-left: -8px;
+  }
+}
+
+ion-searchbar {
+  --border-radius: 4px;
+
+  ion-buttons {
+    position: absolute;
+  }
+}
+
+ion-tab-bar{
+  span {
+    padding-top: 5px;
+  }
+
+  ion-icon {
+    margin-top: 2px;
+  }
 }

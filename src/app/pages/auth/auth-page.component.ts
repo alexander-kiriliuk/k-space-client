@@ -17,18 +17,16 @@ import {
 } from "@ionic/angular/standalone";
 import {ReactiveFormsModule} from "@angular/forms";
 import {createLoginForm} from "./auth.constants";
-import {AuthService} from "./auth.service";
 import {catchError, finalize} from "rxjs";
 import {setAuthTokens} from "../../modules/http/http.constants";
+import {Router} from "@angular/router";
+import {AuthService} from "./auth.service";
 
 @Component({
   selector: "auth-page",
   templateUrl: "./auth-page.component.html",
   styleUrl: "./auth-page.component.scss",
   standalone: true,
-  providers: [
-    AuthService,
-  ],
   imports: [
     IonInput,
     IonItem,
@@ -51,6 +49,7 @@ export class AuthPageComponent {
   private readonly loadingCtrl = inject(LoadingController);
   private readonly alertController = inject(AlertController);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   async doLogin() {
     const loading = await this.loadingCtrl.create({
@@ -71,15 +70,9 @@ export class AuthPageComponent {
         loading.dismiss();
       })
     ).subscribe(async result => {
-      const alert = await this.alertController.create({
-        header: "Login successful",
-        message: JSON.stringify(result),
-        buttons: ["OK"],
-      });
       await setAuthTokens(result);
-      await alert.present();
+      this.router.navigateByUrl("/home");
     });
   }
-
 
 }

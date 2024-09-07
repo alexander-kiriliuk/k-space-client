@@ -1,4 +1,31 @@
-<ion-content class="ion-padding">
+<ion-menu contentId="main-content">
+  <ion-header>
+    <ion-toolbar class="menu-toolbar">
+      <ion-icon class="ion-padding-horizontal" slot="start" size="large" name="logo"/>
+      <ion-title class="ion-no-padding">Space</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list lines="full">
+      <ion-item>
+        <ion-label>Settings</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list lines="none">
+      <ion-item (click)="logout()">
+        <ion-label>Logout</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-toolbar>
+  <ion-searchbar [searchIcon]="false">
+    <ion-buttons slot="start">
+      <ion-menu-button />
+    </ion-buttons>
+  </ion-searchbar>
+</ion-toolbar>
+<ion-content class="ion-padding" id="main-content">
   <router-outlet/>
 </ion-content>
 <ion-tab-bar slot="bottom">
