@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {Component, inject, OnInit} from "@angular/core";
 import {Router, RouterOutlet} from "@angular/router";
 import {
   IonButtons,
@@ -11,6 +11,7 @@ import {
   IonList,
   IonMenu,
   IonMenuButton,
+  IonRow,
   IonSearchbar,
   IonTabBar,
   IonTabButton,
@@ -19,11 +20,23 @@ import {
   LoadingController
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
-import {bookmarksOutline, folderOutline, homeOutline, imagesOutline} from "ionicons/icons";
+import {
+  bookmarksOutline,
+  folderOutline,
+  homeOutline,
+  imagesOutline,
+  logOutOutline,
+  settingsOutline
+} from "ionicons/icons";
 import {AuthService} from "../pages/auth/auth.service";
-import {clearAuthTokens, getAuthTokens} from "../modules/http/http.constants";
+import {clearAuthTokens} from "../modules/http/http.constants";
 import {finalize} from "rxjs";
-import {JwtDto} from "../pages/auth/auth.types";
+import {ProfileService} from "../pages/profile/profile.service";
+import {Store} from "../global/store/store";
+import {CurrentUserEvent} from "../global/constants";
+import {CurrentUser} from "../global/user/current-user";
+import {AsyncPipe} from "@angular/common";
+import {PictureDirective} from "../modules/media/picture.directive";
 
 @Component({
   selector: "layout",
@@ -47,18 +60,30 @@ import {JwtDto} from "../pages/auth/auth.types";
     IonList,
     IonItem,
     IonLabel,
+    AsyncPipe,
+    PictureDirective,
+    IonRow,
   ]
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
 
+  readonly currentUser = inject(CurrentUser);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly loadingCtrl = inject(LoadingController);
+  private readonly profileService = inject(ProfileService);
+  private readonly store = inject(Store);
 
   constructor() {
-    addIcons({homeOutline, bookmarksOutline, imagesOutline, folderOutline});
+    addIcons({homeOutline, bookmarksOutline, imagesOutline, folderOutline, settingsOutline, logOutOutline});
     addIcons({
       "logo": "assets/logo.svg"
+    });
+  }
+
+  ngOnInit() {
+    this.profileService.getUser().subscribe(user => {
+      this.store.emit(CurrentUserEvent.Set, user);
     });
   }
 

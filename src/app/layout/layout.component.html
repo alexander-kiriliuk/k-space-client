@@ -5,23 +5,43 @@
       <ion-title class="ion-no-padding">Space</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
+  <ion-content class="menu-content">
     <ion-list lines="full">
+      @if (currentUser.asObservable | async; as user) {
+        <ion-item>
+          <ion-row class="profile ion-align-items-center">
+            <img class="rounded"
+                 pic
+                 format="thumb"
+                 [alt]="currentUser.initials"
+                 [src]="user?.avatar"/>
+            {{ currentUser.fullName }}
+          </ion-row>
+        </ion-item>
+      }
       <ion-item>
-        <ion-label>Settings</ion-label>
-      </ion-item>
-    </ion-list>
-    <ion-list lines="none">
-      <ion-item (click)="logout()">
-        <ion-label>Logout</ion-label>
+        <ion-row class="ion-align-items-center">
+          <ion-icon name="settings-outline"/>
+          <ion-label>Settings</ion-label>
+        </ion-row>
       </ion-item>
     </ion-list>
   </ion-content>
+  <ion-footer class="menu-footer">
+    <ion-list lines="none">
+      <ion-item (click)="logout()">
+        <ion-row class="ion-align-items-center">
+          <ion-icon name="log-out-outline"/>
+          <ion-label>Logout</ion-label>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+  </ion-footer>
 </ion-menu>
 <ion-toolbar>
   <ion-searchbar [searchIcon]="false">
-    <ion-buttons slot="start">
-      <ion-menu-button />
+    <ion-buttons slot="end">
+      <ion-menu-button/>
     </ion-buttons>
   </ion-searchbar>
 </ion-toolbar>

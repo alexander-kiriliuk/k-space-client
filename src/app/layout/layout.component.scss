@@ -16,12 +16,34 @@ ion-searchbar {
   }
 }
 
-ion-tab-bar{
+ion-tab-bar {
   span {
     padding-top: 5px;
   }
 
   ion-icon {
     margin-top: 2px;
+  }
+}
+
+.profile {
+  img {
+    max-height: 30px;
+  }
+}
+
+.menu-content, .menu-footer {
+  ion-row {
+    gap: 10px;
+    width: 100%;
+  }
+
+  ion-list {
+    height: 100%;
+  }
+
+  ion-icon {
+    width: 30px;
+    height: 22px;
   }
 }
