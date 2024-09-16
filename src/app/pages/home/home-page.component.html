@@ -1,4 +1,9 @@
 <h1>Home-page works!</h1>
+@if (dirs()?.length) {
+  @for (item of dirs(); track item.name) {
+    <p style="padding: 15px 0" (click)="readDir(item.name)">{{ item.name }}</p>
+  }
+}
 <p style="padding: 15px 0">start</p>
 <p style="padding: 15px 0">cont</p>
 <p style="padding: 15px 0">cont</p>
