@@ -10,6 +10,10 @@ export const rootRoutes: Routes = [
     loadComponent: () => import("./pages/setup/setup-page.component").then(m => m.SetupPageComponent),
   },
   {
+    path: "dirs-picker",
+    loadComponent: () => import("./pages/dirs-picker/dirs-picker.component").then(m => m.DirsPickerComponent),
+  },
+  {
     path: "",
     loadChildren: () => import("./layout/layout.routes")
       .then(m => m.layoutRoutes)

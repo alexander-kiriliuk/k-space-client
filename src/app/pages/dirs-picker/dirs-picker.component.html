@@ -1,0 +1,35 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button size="small" [disabled]="!pathTree().length" (click)="moveBack()">
+      <ion-icon name="arrow-back-outline" slot="icon-only"/>
+    </ion-button>
+  </ion-buttons>
+  <ion-title class="ion-no-padding">Select directories for sync</ion-title>
+</ion-toolbar>
+<ion-content>
+  <ion-list lines="full">
+    @if (dirs()?.length) {
+      @for (item of dirs(); track item.name) {
+        <ion-item (click)="readDir(item.name, item.type === 'file')">
+          @if (item.type === "file") {
+            <ion-icon name="document-outline"/>
+          } @else {
+            <ion-icon name="folder-outline"/>
+          }
+          <ion-label>{{ item.name }}</ion-label>
+        </ion-item>
+      }
+    }
+    @if (isEmpty()) {
+      <ion-item>
+        <ion-label>Empty dir</ion-label>
+      </ion-item>
+    }
+  </ion-list>
+  @if (loaderVisibility()) {
+    <!--todo store integration-->
+    <div class="preloader">
+      <ion-spinner/>
+    </div>
+  }
+</ion-content>
