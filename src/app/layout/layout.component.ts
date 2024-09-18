@@ -1,5 +1,5 @@
-import {Component, inject, OnInit} from "@angular/core";
-import {Router, RouterOutlet} from "@angular/router";
+import {ChangeDetectionStrategy, Component, inject, OnInit} from "@angular/core";
+import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import {
   IonButtons,
   IonContent,
@@ -17,7 +17,8 @@ import {
   IonTabButton,
   IonTitle,
   IonToolbar,
-  LoadingController
+  LoadingController,
+  Platform
 } from "@ionic/angular/standalone";
 import {addIcons} from "ionicons";
 import {
@@ -33,15 +34,18 @@ import {clearAuthTokens} from "../modules/http/http.constants";
 import {finalize} from "rxjs";
 import {ProfileService} from "../pages/profile/profile.service";
 import {Store} from "../global/store/store";
-import {CurrentUserEvent} from "../global/constants";
-import {CurrentUser} from "../global/user/current-user";
+import {CurrentUserStateEvent, DirsStateEvent} from "../global/constants";
+import {CurrentUserState} from "../global/state/current-user.state";
 import {AsyncPipe} from "@angular/common";
 import {PictureDirective} from "../modules/media/picture.directive";
+import {getDirsForSync} from "../pages/dirs-picker/dirs-picker.constants";
+import {AppService} from "../global/app.service";
 
 @Component({
   selector: "layout",
   templateUrl: "./layout.component.html",
   styleUrl: "./layout.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     RouterOutlet,
@@ -63,16 +67,19 @@ import {PictureDirective} from "../modules/media/picture.directive";
     AsyncPipe,
     PictureDirective,
     IonRow,
+    RouterLink,
   ]
 })
 export class LayoutComponent implements OnInit {
 
-  readonly currentUser = inject(CurrentUser);
+  readonly currentUser = inject(CurrentUserState);
   private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
   private readonly loadingCtrl = inject(LoadingController);
   private readonly profileService = inject(ProfileService);
+  private readonly appService = inject(AppService);
   private readonly store = inject(Store);
+  private readonly router = inject(Router);
+  private readonly platform = inject(Platform);
 
   constructor() {
     addIcons({homeOutline, bookmarksOutline, imagesOutline, folderOutline, settingsOutline, logOutOutline});
@@ -81,10 +88,23 @@ export class LayoutComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.profileService.getUser().subscribe(user => {
-      this.store.emit(CurrentUserEvent.Set, user);
+      this.store.emit(CurrentUserStateEvent.Set, user);
     });
+    if (this.platform.is("desktop") || this.platform.is("mobileweb")) {
+      this.appService.getDirsTree().subscribe(dirs => {
+        this.store.emit(DirsStateEvent.Set, dirs);
+        if (!dirs?.children) {
+          this.router.navigateByUrl("/settings");
+        }
+      });
+    } else {
+      const dirs = await getDirsForSync();
+      if (!dirs) {
+        this.router.navigateByUrl("/dirs-picker");
+      }
+    }
   }
 
   async logout() {

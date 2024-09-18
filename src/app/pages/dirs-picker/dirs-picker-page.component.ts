@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from "@angular/core";
 import {Directory, FileInfo, Filesystem} from "@capacitor/filesystem";
 import {
   AlertController,
@@ -19,9 +19,10 @@ import {arrowBackOutline, documentOutline, folderOutline} from "ionicons/icons";
 
 @Component({
   selector: "dirs-picker",
-  templateUrl: "./dirs-picker.component.html",
-  styleUrl: "./dirs-picker.component.scss",
+  templateUrl: "./dirs-picker-page.component.html",
+  styleUrl: "./dirs-picker-page.component.scss",
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonSpinner,
     IonButtons,
@@ -36,7 +37,7 @@ import {arrowBackOutline, documentOutline, folderOutline} from "ionicons/icons";
     IonLabel
   ]
 })
-export class DirsPickerComponent implements OnInit {
+export class DirsPickerPageComponent implements OnInit {
 
   dirs = signal<FileInfo[]>(undefined);
   currentDir = signal("");

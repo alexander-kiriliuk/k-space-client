@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {
   AlertController,
   IonButton,
@@ -26,6 +26,7 @@ import {AuthService} from "./auth.service";
   selector: "auth-page",
   templateUrl: "./auth-page.component.html",
   styleUrl: "./auth-page.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     IonInput,

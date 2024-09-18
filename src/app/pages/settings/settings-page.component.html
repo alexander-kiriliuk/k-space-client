@@ -1,0 +1,14 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button size="small" (click)="navBack()">
+      <ion-icon name="arrow-back-outline" slot="icon-only"/>
+    </ion-button>
+  </ion-buttons>
+  <ion-title class="ion-no-padding">Settings</ion-title>
+</ion-toolbar>
+<ion-content>
+  <p>Dirs on server:</p>
+  @if (dirsState.asObservable | async; as dirs) {
+    {{ dirs.name[0].value }}
+  }
+</ion-content>

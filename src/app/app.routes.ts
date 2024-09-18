@@ -11,7 +11,12 @@ export const rootRoutes: Routes = [
   },
   {
     path: "dirs-picker",
-    loadComponent: () => import("./pages/dirs-picker/dirs-picker.component").then(m => m.DirsPickerComponent),
+    loadComponent: () =>
+      import("./pages/dirs-picker/dirs-picker-page.component").then(m => m.DirsPickerPageComponent),
+  },
+  {
+    path: "settings",
+    loadComponent: () => import("./pages/settings/settings-page.component").then(m => m.SettingsPageComponent),
   },
   {
     path: "",

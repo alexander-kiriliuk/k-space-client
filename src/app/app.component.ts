@@ -47,7 +47,7 @@ export class AppComponent {
   }
 
   private async testConnection() {
-    this.appService.getOptions().pipe(
+    this.appService.checkAccess().pipe(
       catchError(async error => {
         this.router.navigateByUrl("/auth");
         throw new Error(error);
@@ -56,7 +56,7 @@ export class AppComponent {
         SplashScreen.hide();
       })
     ).subscribe(async result => {
-      this.router.navigateByUrl("/home");
+      this.router.navigateByUrl("/");
     });
   }
 

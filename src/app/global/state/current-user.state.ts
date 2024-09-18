@@ -18,13 +18,13 @@ import {inject, Injectable} from "@angular/core";
 import {BehaviorSubject} from "rxjs";
 import {User} from "../types";
 import {Store} from "../store/store";
-import {CurrentUserEvent, Roles} from "../constants";
+import {CurrentUserStateEvent, Roles} from "../constants";
 
 /**
  * Service for managing the current user state.
  */
 @Injectable({providedIn: "root"})
-export class CurrentUser {
+export class CurrentUserState {
 
   /** Subject holding the current user. */
   private readonly sub = new BehaviorSubject<User>(null);
@@ -33,9 +33,9 @@ export class CurrentUser {
   readonly asObservable = this.sub.asObservable();
 
   constructor() {
-    this.store.on<User>(CurrentUserEvent.Set)
+    this.store.on<User>(CurrentUserStateEvent.Set)
       .subscribe(v => this.setUser(v.payload));
-    this.store.on<User>(CurrentUserEvent.Update)
+    this.store.on<User>(CurrentUserStateEvent.Update)
       .subscribe(v => this.updateUser(v.payload));
   }
 
